@@ -61,10 +61,10 @@ class DailyForecastCellView: UIView {
         }
     }
 
-    func configure(day: String, icon: UIImage?, temperature: String, showRain: Bool) {
+    func configure(day: String, icon: UIImage?, temperatureMax: Double, temperatureMin: Double, showRain: Bool) {
         dayLabel.text = day
         iconView.image = icon
-        tempLabel.text = temperature
+        tempLabel.text = "\(temperatureMin)°C / \(temperatureMax)°C"
         rainIndicator.isHidden = !showRain
     }
 }

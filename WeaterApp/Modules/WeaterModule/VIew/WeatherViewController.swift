@@ -4,38 +4,20 @@ import SnapKit
 
 final class WeatherViewController: UIViewController {
     
+    var presenter: WeatherPresenterProtocol?
+    
     private let weatherView = CurrentWeatherView()
     private let hourlyView = HourlyForecastView()
     private let dailyView = DailyForecastView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        WeatherManager.shared.fetchFullWeather(lat: 59.9375, lon: 30.3086) { result in
-            switch result {
-            case .success(let (current, forecast)):
-                self.weatherView.configure(model: current)
-                let data = forecast[0]
-                var array = [HourlyForecast]()
-                for i in 12...20 {
-                
-                    let forecastData =
-                        HourlyForecast(time: data.hour?[i].time ?? "00",
-                                       icon: UIImage(systemName: "sun.max.fill"),
-                                       temperature: "\(data.hour?[i].temp_c ?? 10)",
-                                       precipitation: "\(data.hour?[i].chance_of_rain ?? 50)")
-                    array.append(forecastData)
-                }
-                self.hourlyView.configure(with: array)
-                print("Завтра: \(forecast[1].day.maxtemp_c)°C / \(forecast[1].day.mintemp_c)°C")
-            case .failure(let error):
-                print("Ошибка получения погоды: \(error)")
-            }
-        }
-
+        
         setupView()
         configure()
         setupConstraints()
+        
+//        presenter?.fetchWeather()
     }
 }
 
@@ -47,20 +29,7 @@ extension WeatherViewController {
         view.addSubview(dailyView)
     }
     
-    private func configure() {
- 
-        let data = [
-            DailyForecast(day: "Пн", icon: UIImage(systemName: "cloud.sun.fill"), temperature: "+17° / +25°", willRain: false),
-            DailyForecast(day: "Вт", icon: UIImage(systemName: "cloud.rain.fill"), temperature: "+16° / +22°", willRain: true),
-            DailyForecast(day: "Ср", icon: UIImage(systemName: "cloud.sun.fill"), temperature: "+17° / +25°", willRain: false),
-            DailyForecast(day: "Чт", icon: UIImage(systemName: "cloud.rain.fill"), temperature: "+16° / +22°", willRain: true),
-            DailyForecast(day: "Пт", icon: UIImage(systemName: "cloud.sun.fill"), temperature: "+17° / +25°", willRain: false),
-            DailyForecast(day: "Сб", icon: UIImage(systemName: "cloud.rain.fill"), temperature: "+16° / +22°", willRain: true),
-            DailyForecast(day: "Вс", icon: UIImage(systemName: "cloud.rain.fill"), temperature: "+16° / +22°", willRain: true),
-        ]
-        
-        dailyView.configure(with: data)
-    }
+    private func configure() {}
     
     private func setupConstraints() {
         weatherView.snp.makeConstraints { make in
@@ -80,5 +49,40 @@ extension WeatherViewController {
             make.leading.trailing.equalToSuperview().inset(10)
             make.bottom.equalToSuperview().offset(-20)
         }
+    }
+}
+
+extension WeatherViewController: WeatherProtocol {
+    func success(currentWeather: CurrentWeatherModel, forecast: [DailyWeatherModel]) {
+        self.weatherView.configure(model: currentWeather)
+        
+        let dataHour = forecast[0]
+        var array = [HourlyForecast]()
+        for i in 12...20 {
+            let forecastData =
+            HourlyForecast(time: dataHour.hour?[i].time ?? "00",
+                           icon: UIImage(systemName: "sun.max.fill"),
+                           temperature: "\(dataHour.hour?[i].temp_c ?? 10)",
+                           precipitation: "\(dataHour.hour?[i].chance_of_rain ?? 50)")
+            array.append(forecastData)
+        }
+        
+        
+        let dataWeek = forecast
+        var weekArray = [DailyForecast]()
+        for i in 0...2 {
+            let data = DailyForecast(day: dataWeek[i].date,
+                                     icon: UIImage(systemName: "cloud.sun.fill"),
+                                     temperatureMax: dataWeek[i].day.maxtemp_c,
+                                     temperatureMin: dataWeek[i].day.mintemp_c,
+                                     willRain: false)
+            weekArray.append(data)
+        }
+        self.hourlyView.configure(with: array)
+        self.dailyView.configure(with: weekArray)
+    }
+    
+    func error(error: Error) {
+        print("Error", error.localizedDescription)
     }
 }

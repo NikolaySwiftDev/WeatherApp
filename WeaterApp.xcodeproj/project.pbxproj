@@ -157,6 +157,8 @@
 				DEVELOPMENT_TEAM = T82Y9NV4PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeaterApp/Resources/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Track your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Track your location2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -188,6 +190,8 @@
 				DEVELOPMENT_TEAM = T82Y9NV4PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeaterApp/Resources/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Track your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Track your location2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;

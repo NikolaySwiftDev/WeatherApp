@@ -36,7 +36,8 @@ class DailyForecastView: UIView {
             cell.configure(
                 day: item.day,
                 icon: item.icon,
-                temperature: item.temperature,
+                temperatureMax: item.temperatureMax,
+                temperatureMin: item.temperatureMin,
                 showRain: item.willRain
             )
             stackView.addArrangedSubview(cell)
