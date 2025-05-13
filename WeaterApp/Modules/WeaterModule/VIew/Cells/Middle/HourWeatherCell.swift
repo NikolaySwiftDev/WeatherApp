@@ -36,17 +36,13 @@ class HourlyForecastCellView: UIView {
         temperatureLabel.textColor = .white
         temperatureLabel.textAlignment = .center
 
-        precipitationLabel.font = .systemFont(ofSize: 12)
-        precipitationLabel.textColor = .cyan
-        precipitationLabel.textAlignment = .center
 
         addSubview(timeLabel)
         addSubview(iconView)
         addSubview(temperatureLabel)
-        addSubview(precipitationLabel)
 
         timeLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(8)
+            make.top.equalToSuperview().offset(15)
             make.centerX.equalToSuperview()
         }
 
@@ -60,18 +56,11 @@ class HourlyForecastCellView: UIView {
             make.top.equalTo(iconView.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
         }
-
-        precipitationLabel.snp.makeConstraints { make in
-            make.top.equalTo(temperatureLabel.snp.bottom).offset(4)
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-8)
-        }
     }
 
     func configure(model: DailyWeatherModel.Hour) {
         timeLabel.text = model.time.getTime()
         temperatureLabel.text = "\(model.temp_c)°C"
-        precipitationLabel.text = "\(model.chance_of_rain)%"
         
         var iconString = model.condition.icon
         if iconString.hasPrefix("//") {

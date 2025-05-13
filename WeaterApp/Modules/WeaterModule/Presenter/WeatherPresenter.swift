@@ -38,6 +38,7 @@ class WeatherPresenter: WeatherPresenterProtocol {
             case .success(let (current, forecast)):
                 currentWeather = current
                 forecastWeather = forecast
+                hourArrayWeather = getDailyWeatherHour(forecast: forecast)
                 view?.success(currentWeather: current, forecast: forecast, hourArray: getDailyWeatherHour(forecast: forecast))
             case .failure(let failure):
                 view?.error(error: failure)
@@ -46,17 +47,33 @@ class WeatherPresenter: WeatherPresenterProtocol {
     }
     
     func getDailyWeatherHour(forecast: [DailyWeatherModel]) -> [DailyWeatherModel.Hour] {
-        let dataHour = forecast[0]
-        var array = [DailyWeatherModel.Hour]()
-        for i in 0...23 {
-            if let forecastData = dataHour.hour?[i] {
-                array.append(forecastData)
-            }
+        var result: [DailyWeatherModel.Hour] = []
+
+        let currentHour = Calendar.current.component(.hour, from: Date())
+        guard forecast.count >= 2,
+              let todayHours = forecast[0].hour,
+              let tomorrowHours = forecast[1].hour else {
+            return []
         }
-        hourArrayWeather = array
-        return array
+
+        let todayRemainingHours = todayHours.filter { hourEntry in
+            guard let hourString = hourEntry.time.split(separator: " ").last,
+                  let hourComponent = Int(hourString.prefix(2)) else {
+                return false
+            }
+            return hourComponent >= currentHour + 1
+        }
+
+        result.append(contentsOf: todayRemainingHours)
+        result.append(contentsOf: tomorrowHours)
+
+        
+        return result
     }
     
+    deinit {
+        location?.delegate = nil
+    }
 }
 
 extension WeatherPresenter: LocationManagerDelegate {
