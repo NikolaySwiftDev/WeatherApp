@@ -37,13 +37,13 @@ class CurrentWeatherView: UIView {
         layer.cornerRadius = 20
         clipsToBounds = true
         
-        cityLabel.font = .boldSystemFont(ofSize: 22)
+        cityLabel.font = .systemFont(ofSize: 22, weight: .black)
         cityLabel.textColor = .white
         
-        dateLabel.font = .systemFont(ofSize: 16)
+        dateLabel.font = .systemFont(ofSize: 17, weight: .black)
         dateLabel.textColor = .white
         
-        temperatureLabel.font = .systemFont(ofSize: 64, weight: .thin)
+        temperatureLabel.font = .systemFont(ofSize: 64, weight: .bold)
         temperatureLabel.textColor = .white
         
         descriptionLabel.font = .systemFont(ofSize: 20)
@@ -70,7 +70,7 @@ class CurrentWeatherView: UIView {
         cityStack.axis = .horizontal
         cityStack.distribution = .equalSpacing
         
-        let tempStack = UIStackView(arrangedSubviews: [weatherIconView, temperatureLabel])
+        let tempStack = UIStackView(arrangedSubviews: [temperatureLabel, weatherIconView])
         tempStack.axis = .horizontal
         tempStack.spacing = 10
         tempStack.alignment = .center
@@ -88,12 +88,12 @@ class CurrentWeatherView: UIView {
         addSubview(mainStack)
         
         NSLayoutConstraint.activate([
-            mainStack.topAnchor.constraint(equalTo: topAnchor, constant: 16),
+            mainStack.topAnchor.constraint(equalTo: topAnchor, constant: 12),
             mainStack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             mainStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
-            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16),
-            weatherIconView.widthAnchor.constraint(equalToConstant: 50),
-            weatherIconView.heightAnchor.constraint(equalToConstant: 50)
+            mainStack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -12),
+            weatherIconView.widthAnchor.constraint(equalToConstant: 80),
+            weatherIconView.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
     
@@ -101,13 +101,22 @@ class CurrentWeatherView: UIView {
     
     func configure(model: CurrentWeatherModel) {
         cityLabel.text = model.location.name
-        dateLabel.text = model.location.localtime
+        dateLabel.text = model.location.localtime.getDate()
         temperatureLabel.text = "\(model.current.temp_c) °C"
         descriptionLabel.text = model.current.condition.text
         feelsLikeLabel.text = "Feels like \(model.current.feelslike_c) °C"
-        weatherIconView.image = UIImage(systemName: model.current.condition.icon) ?? UIImage(systemName: "sun.max.fill")
         humidityLabel.text = "💧 \(model.current.humidity) %"
         windLabel.text = "💨 \(model.current.wind_kph) km/h"
         pressureLabel.text = "🧭 \(Int(model.current.pressure_mb)) mb"
+        
+        var iconString = model.current.condition.icon
+        if iconString.hasPrefix("//") {
+            iconString = "https:" + iconString
+        }
+        if let imageUrl = URL(string: iconString) {
+            weatherIconView.sd_setImage(with: imageUrl, placeholderImage: UIImage())
+        }
     }
+    
+    
 }

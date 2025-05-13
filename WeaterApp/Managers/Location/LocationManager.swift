@@ -2,17 +2,16 @@ import UIKit
 import CoreLocation
 
 protocol LocationManagerDelegate: AnyObject {
-    func didUpdateLocation(lat: Double, lon: Double)
+    func didUpdateLocation()
 }
-
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
 
     weak var delegate: LocationManagerDelegate?
 
     private var locationManager: CLLocationManager?
-    var latitude: Double?
-    var longitude: Double?
+    var latitude: Double = 55.751244
+    var longitude: Double = 37.618423
     
     override init() {
         super.init()
@@ -28,9 +27,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         case .authorizedWhenInUse, .authorizedAlways:
             locationManager?.startUpdatingLocation()
         case .denied, .restricted:
-            latitude = 55.751244
-            longitude = 37.618423
-            delegate?.didUpdateLocation(lat: latitude!, lon: longitude!)
+            delegate?.didUpdateLocation()
         @unknown default:
             break
         }
@@ -40,14 +37,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         guard let location = locations.last else { return }
         latitude = location.coordinate.latitude
         longitude = location.coordinate.longitude
-        delegate?.didUpdateLocation(lat: latitude!, lon: longitude!)
-    }
-
-    func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        print("Location error: \(error.localizedDescription)")
-        latitude = 55.751244
-        longitude = 37.618423
-//        delegate?.didUpdateLocation(lat: latitude!, lon: longitude!)
+        delegate?.didUpdateLocation()
     }
 
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

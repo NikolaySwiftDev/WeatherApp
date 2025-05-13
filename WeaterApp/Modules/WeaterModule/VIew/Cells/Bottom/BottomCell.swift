@@ -1,12 +1,12 @@
 import UIKit
 import SnapKit
+import SDWebImage
 
 class DailyForecastCellView: UIView {
     
     private let dayLabel = UILabel()
     private let iconView = UIImageView()
     private let tempLabel = UILabel()
-    private let rainIndicator = UIView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -19,23 +19,20 @@ class DailyForecastCellView: UIView {
     }
 
     private func setupView() {
-        dayLabel.font = .systemFont(ofSize: 16)
+        dayLabel.font = .systemFont(ofSize: 22, weight: .bold)
         dayLabel.textColor = .white
         
         iconView.contentMode = .scaleAspectFit
         iconView.tintColor = .white
         
-        tempLabel.font = .systemFont(ofSize: 16)
+        tempLabel.font = .systemFont(ofSize: 18, weight: .semibold)
         tempLabel.textColor = .white
         tempLabel.textAlignment = .right
-        
-        rainIndicator.backgroundColor = UIColor.cyan.withAlphaComponent(0.7)
-        rainIndicator.layer.cornerRadius = 4
+
 
         addSubview(dayLabel)
         addSubview(iconView)
         addSubview(tempLabel)
-        addSubview(rainIndicator)
 
         dayLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(12)
@@ -45,7 +42,8 @@ class DailyForecastCellView: UIView {
         iconView.snp.makeConstraints { make in
             make.centerY.equalToSuperview()
             make.leading.equalTo(dayLabel.snp.trailing).offset(16)
-            make.width.height.equalTo(24)
+            make.width.equalTo(44)
+            make.height.equalTo(34)
         }
 
         tempLabel.snp.makeConstraints { make in
@@ -53,18 +51,18 @@ class DailyForecastCellView: UIView {
             make.trailing.equalToSuperview().offset(-12)
         }
 
-        rainIndicator.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.trailing.equalTo(tempLabel.snp.leading).offset(-12)
-            make.width.equalTo(8)
-            make.height.equalTo(8)
-        }
     }
 
-    func configure(day: String, icon: UIImage?, temperatureMax: Double, temperatureMin: Double, showRain: Bool) {
-        dayLabel.text = day
-        iconView.image = icon
-        tempLabel.text = "\(temperatureMin)°C / \(temperatureMax)°C"
-        rainIndicator.isHidden = !showRain
+    func configure(model: DailyWeatherModel) {
+        dayLabel.text = model.date.getFullDate()
+        tempLabel.text = "\(model.day.mintemp_c)°C / \(model.day.maxtemp_c)°C"
+        
+        var iconString = model.day.condition.icon
+        if iconString.hasPrefix("//") {
+            iconString = "https:" + iconString
+        }
+        if let imageUrl = URL(string: iconString) {
+            iconView.sd_setImage(with: imageUrl, placeholderImage: UIImage())
+        }
     }
 }

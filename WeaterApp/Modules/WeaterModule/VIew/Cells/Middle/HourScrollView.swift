@@ -17,6 +17,10 @@ class HourlyForecastView: UIView {
     }
 
     private func setupView() {
+        backgroundColor = UIColor.systemBlue
+        layer.cornerRadius = 20
+        clipsToBounds = true
+        
         addSubview(scrollView)
         scrollView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
@@ -31,12 +35,13 @@ class HourlyForecastView: UIView {
         stackView.distribution = .equalSpacing
 
         stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(0)
-            make.height.equalToSuperview().offset(-22)
+            make.leading.trailing.equalToSuperview()
+            make.centerY.equalToSuperview()
+            make.height.equalToSuperview().offset(-20)
         }
     }
 
-    func configure(with data: [HourlyForecast]) {
+    func configure(with data: [DailyWeatherModel.Hour]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
         for item in data {
@@ -44,12 +49,7 @@ class HourlyForecastView: UIView {
             cell.snp.makeConstraints { make in
                 make.width.equalTo(80)
             }
-            cell.configure(
-                time: item.time,
-                icon: item.icon,
-                temp: ("\(item.temperature)°C"),
-                precipitation: ("💧\(item.precipitation)%")
-            )
+            cell.configure(model: item)
             stackView.addArrangedSubview(cell)
         }
     }

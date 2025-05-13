@@ -16,6 +16,10 @@ class DailyForecastView: UIView {
     }
 
     private func setupView() {
+        backgroundColor = UIColor.systemBlue
+        layer.cornerRadius = 20
+        clipsToBounds = true
+        
         stackView.axis = .vertical
         stackView.spacing = 10
         stackView.distribution = .fillEqually
@@ -28,20 +32,13 @@ class DailyForecastView: UIView {
         }
     }
 
-    func configure(with data: [DailyForecast]) {
+    func configure(with data: [DailyWeatherModel]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
       
         for item in data {
             let cell = DailyForecastCellView()
-            cell.configure(
-                day: item.day,
-                icon: item.icon,
-                temperatureMax: item.temperatureMax,
-                temperatureMin: item.temperatureMin,
-                showRain: item.willRain
-            )
+            cell.configure(model: item)
             stackView.addArrangedSubview(cell)
         }
     }
-
 }

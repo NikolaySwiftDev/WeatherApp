@@ -7,6 +7,7 @@ class WeatherManager {
     static let shared = WeatherManager()
     
     private let apiKey = "fa8b3df74d4042b9aa7135114252304"
+//    private let apiKey = "8c84bfc0b5ec42c3ab0142721251305"
     private let session = URLSession.shared
 
     // MARK: - 1. Только текущая погода

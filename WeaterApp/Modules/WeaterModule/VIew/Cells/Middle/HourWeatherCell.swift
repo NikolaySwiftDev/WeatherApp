@@ -25,11 +25,11 @@ class HourlyForecastCellView: UIView {
         layer.cornerRadius = 12
         clipsToBounds = true
 
-        timeLabel.font = .systemFont(ofSize: 14)
+        timeLabel.font = .systemFont(ofSize: 16, weight: .bold)
         timeLabel.textColor = .white
         timeLabel.textAlignment = .center
 
-        iconView.contentMode = .scaleAspectFit
+        iconView.contentMode = .scaleAspectFill
         iconView.tintColor = .white
 
         temperatureLabel.font = .boldSystemFont(ofSize: 16)
@@ -53,7 +53,7 @@ class HourlyForecastCellView: UIView {
         iconView.snp.makeConstraints { make in
             make.top.equalTo(timeLabel.snp.bottom).offset(4)
             make.centerX.equalToSuperview()
-            make.width.height.equalTo(24)
+            make.width.height.equalTo(40)
         }
 
         temperatureLabel.snp.makeConstraints { make in
@@ -68,10 +68,17 @@ class HourlyForecastCellView: UIView {
         }
     }
 
-    func configure(time: String, icon: UIImage?, temp: String, precipitation: String) {
-        timeLabel.text = time
-        iconView.image = icon
-        temperatureLabel.text = temp
-        precipitationLabel.text = precipitation
+    func configure(model: DailyWeatherModel.Hour) {
+        timeLabel.text = model.time.getTime()
+        temperatureLabel.text = "\(model.temp_c)°C"
+        precipitationLabel.text = "\(model.chance_of_rain)%"
+        
+        var iconString = model.condition.icon
+        if iconString.hasPrefix("//") {
+            iconString = "https:" + iconString
+        }
+        if let imageUrl = URL(string: iconString) {
+            iconView.sd_setImage(with: imageUrl, placeholderImage: UIImage())
+        }
     }
 }

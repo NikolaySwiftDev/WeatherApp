@@ -2,13 +2,14 @@
 import Foundation
 
 protocol WeatherProtocol: AnyObject {
-    func success(currentWeather: CurrentWeatherModel, forecast: [DailyWeatherModel])
+    func success(currentWeather: CurrentWeatherModel, forecast: [DailyWeatherModel], hourArray: [DailyWeatherModel.Hour])
     func error(error: Error)
 }
 
 protocol WeatherPresenterProtocol: AnyObject {
     var currentWeather: CurrentWeatherModel? { get set }
     var forecastWeather: [DailyWeatherModel]? { get set }
+    var hourArrayWeather: [DailyWeatherModel.Hour]? { get set }
     func fetchWeather()
     init(view: WeatherProtocol, network: WeatherManager, location: LocationManager)
 }
@@ -18,6 +19,7 @@ class WeatherPresenter: WeatherPresenterProtocol {
     weak var view: WeatherProtocol?
     var currentWeather: CurrentWeatherModel?
     var forecastWeather: [DailyWeatherModel]?
+    var hourArrayWeather: [DailyWeatherModel.Hour]?
     let network: WeatherManager?
     let location: LocationManager?
     
@@ -36,16 +38,29 @@ class WeatherPresenter: WeatherPresenterProtocol {
             case .success(let (current, forecast)):
                 currentWeather = current
                 forecastWeather = forecast
-                view?.success(currentWeather: current, forecast: forecast)
+                view?.success(currentWeather: current, forecast: forecast, hourArray: getDailyWeatherHour(forecast: forecast))
             case .failure(let failure):
                 view?.error(error: failure)
             }
         }
     }
+    
+    func getDailyWeatherHour(forecast: [DailyWeatherModel]) -> [DailyWeatherModel.Hour] {
+        let dataHour = forecast[0]
+        var array = [DailyWeatherModel.Hour]()
+        for i in 0...23 {
+            if let forecastData = dataHour.hour?[i] {
+                array.append(forecastData)
+            }
+        }
+        hourArrayWeather = array
+        return array
+    }
+    
 }
 
 extension WeatherPresenter: LocationManagerDelegate {
-    func didUpdateLocation(lat: Double, lon: Double) {
+    func didUpdateLocation() {
         fetchWeather()
     }
 }
