@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		9583061F2DD38714007DD92C /* SDWebImage in Frameworks */ = {isa = PBXBuildFile; productRef = 9583061E2DD38714007DD92C /* SDWebImage */; };
+		95B840842DD45EA700574265 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 95B840832DD45EA700574265 /* Lottie */; };
+		95FF48D82DD3237800DDE0A4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 95FF48D72DD3237800DDE0A4 /* SnapKit */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
 		95FF489D2DD31CC800DDE0A4 /* WeaterApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeaterApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -36,6 +42,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9583061F2DD38714007DD92C /* SDWebImage in Frameworks */,
+				95FF48D82DD3237800DDE0A4 /* SnapKit in Frameworks */,
+				95B840842DD45EA700574265 /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +87,9 @@
 			);
 			name = WeaterApp;
 			packageProductDependencies = (
+				95FF48D72DD3237800DDE0A4 /* SnapKit */,
+				9583061E2DD38714007DD92C /* SDWebImage */,
+				95B840832DD45EA700574265 /* Lottie */,
 			);
 			productName = WeaterApp;
 			productReference = 95FF489D2DD31CC800DDE0A4 /* WeaterApp.app */;
@@ -107,6 +119,11 @@
 			);
 			mainGroup = 95FF48942DD31CC800DDE0A4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				95FF48D62DD3237800DDE0A4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				9583061D2DD38714007DD92C /* XCRemoteSwiftPackageReference "SDWebImage" */,
+				95B840822DD45EA700574265 /* XCRemoteSwiftPackageReference "lottie-spm" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 95FF489E2DD31CC800DDE0A4 /* Products */;
 			projectDirPath = "";
@@ -148,6 +165,8 @@
 				DEVELOPMENT_TEAM = T82Y9NV4PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeaterApp/Resources/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Track your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Track your location2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -179,6 +198,8 @@
 				DEVELOPMENT_TEAM = T82Y9NV4PB;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = WeaterApp/Resources/Info.plist;
+				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = "Track your location";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "Track your location2";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
@@ -341,6 +362,51 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		9583061D2DD38714007DD92C /* XCRemoteSwiftPackageReference "SDWebImage" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SDWebImage/SDWebImage.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.21.0;
+			};
+		};
+		95B840822DD45EA700574265 /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = exactVersion;
+				version = 4.5.0;
+			};
+		};
+		95FF48D62DD3237800DDE0A4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		9583061E2DD38714007DD92C /* SDWebImage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9583061D2DD38714007DD92C /* XCRemoteSwiftPackageReference "SDWebImage" */;
+			productName = SDWebImage;
+		};
+		95B840832DD45EA700574265 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95B840822DD45EA700574265 /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
+		95FF48D72DD3237800DDE0A4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 95FF48D62DD3237800DDE0A4 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 95FF48952DD31CC800DDE0A4 /* Project object */;
 }
