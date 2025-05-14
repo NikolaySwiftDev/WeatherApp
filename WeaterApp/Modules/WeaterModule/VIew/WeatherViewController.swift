@@ -4,21 +4,14 @@ import SnapKit
 
 final class WeatherViewController: UIViewController {
     
+    //MARK: - Properties
     var presenter: WeatherPresenterProtocol?
-    
-    private let weatherView = CurrentWeatherView()
-    private let hourlyView = HourlyForecastView()
-    private let dailyView = DailyForecastView()
-    
-    private let backView: UIVisualEffectView = {
-        let blurEffect = UIBlurEffect(style: .light)
-        let view = UIVisualEffectView(effect: blurEffect)
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
-    
-    private let loader = UIActivityIndicatorView()
-    
+    private lazy var weatherView = CurrentWeatherView()
+    private lazy var hourlyView = HourlyForecastView()
+    private lazy var dailyView = DailyForecastView()
+    private let backView = LottieView(animationName: "loading")
+        
+    //MARK: - View did load
     override func viewDidLoad() {
         super.viewDidLoad()
         setupView()
@@ -27,30 +20,46 @@ final class WeatherViewController: UIViewController {
     }
 }
 
+//MARK: - Weather Protocol
+extension WeatherViewController: WeatherProtocol {
+    func success(currentWeather: CurrentWeatherModel, forecast: [DailyWeatherModel], hourArray: [DailyWeatherModel.Hour] ) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+            self.weatherView.configure(model: currentWeather)
+            self.hourlyView.configure(with: hourArray)
+            self.dailyView.configure(with: forecast) 
+            self.backView.stop()
+            self.backView.removeFromSuperview()
+        }
+    }
+    
+    func error(error: Error) {
+        print("Error", error.localizedDescription)
+    }
+}
+
 extension WeatherViewController {
+    
+    //MARK: - Setup View
     private func setupView() {
         view.addSubview(weatherView)
         view.addSubview(hourlyView)
         view.addSubview(dailyView)
         view.addSubview(backView)
-        view.addSubview(loader)
     }
     
+    //MARK: - Configure
     private func configure() {
         view.backgroundColor = .blue.withAlphaComponent(0.6)
-        loader.startAnimating()
     }
     
+    //MARK: - Setup Constraints
     private func setupConstraints() {
         backView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        
-        loader.snp.makeConstraints { make in
             make.center.equalToSuperview()
-            make.width.height.equalTo(100)
+            make.width.equalTo(200)
+            make.height.equalTo(300)
         }
-        
+
         weatherView.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(20)
             make.leading.trailing.equalToSuperview().inset(10)
@@ -68,23 +77,5 @@ extension WeatherViewController {
             make.leading.trailing.equalToSuperview().inset(10)
             make.height.equalTo(260)
         }
-    }
-}
-
-extension WeatherViewController: WeatherProtocol {
-    func success(currentWeather: CurrentWeatherModel, forecast: [DailyWeatherModel], hourArray: [DailyWeatherModel.Hour] ) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-            self.weatherView.configure(model: currentWeather)
-            self.hourlyView.configure(with: hourArray)
-            self.dailyView.configure(with: forecast)
-            
-            self.loader.stopAnimating()
-            self.loader.removeFromSuperview()
-            self.backView.removeFromSuperview()
-        }
-    }
-    
-    func error(error: Error) {
-        print("Error", error.localizedDescription)
     }
 }

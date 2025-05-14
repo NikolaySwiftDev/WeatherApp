@@ -14,7 +14,7 @@ class DailyForecastView: UIView {
         super.init(coder: coder)
         setupView()
     }
-
+    
     private func setupView() {
         backgroundColor = UIColor.systemBlue
         layer.cornerRadius = 20

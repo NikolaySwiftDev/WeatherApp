@@ -3,8 +3,7 @@ import UIKit
 
 class CurrentWeatherView: UIView {
     
-    // MARK: - UI Elements
-    
+    // MARK: - Properties
     private let cityLabel = UILabel()
     private let dateLabel = UILabel()
     
@@ -19,7 +18,6 @@ class CurrentWeatherView: UIView {
     private let pressureLabel = UILabel()
     
     // MARK: - Init
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -30,8 +28,7 @@ class CurrentWeatherView: UIView {
         setupView()
     }
     
-    // MARK: - Setup
-    
+    // MARK: - Setup view
     private func setupView() {
         backgroundColor = UIColor.systemBlue
         layer.cornerRadius = 20
@@ -65,6 +62,7 @@ class CurrentWeatherView: UIView {
         setupLayout()
     }
     
+    //MARK: - Setup Layout (for show different methods)
     private func setupLayout() {
         let cityStack = UIStackView(arrangedSubviews: [cityLabel, dateLabel])
         cityStack.axis = .horizontal
@@ -97,8 +95,7 @@ class CurrentWeatherView: UIView {
         ])
     }
     
-    // MARK: - Configuration
-    
+    // MARK: - Configure
     func configure(model: CurrentWeatherModel) {
         cityLabel.text = model.location.name
         dateLabel.text = model.location.localtime.getDate()

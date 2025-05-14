@@ -4,10 +4,12 @@ import SDWebImage
 
 class DailyForecastCellView: UIView {
     
+    //MARK: - Properties
     private let dayLabel = UILabel()
     private let iconView = UIImageView()
     private let tempLabel = UILabel()
     
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -18,6 +20,7 @@ class DailyForecastCellView: UIView {
         setupView()
     }
 
+    //MARK: - Setup View
     private func setupView() {
         dayLabel.font = .systemFont(ofSize: 22, weight: .bold)
         dayLabel.textColor = .white
@@ -53,6 +56,7 @@ class DailyForecastCellView: UIView {
 
     }
 
+    //MARK: - Configure
     func configure(model: DailyWeatherModel) {
         dayLabel.text = model.date.getFullDate()
         tempLabel.text = "\(model.day.mintemp_c)°C / \(model.day.maxtemp_c)°C"

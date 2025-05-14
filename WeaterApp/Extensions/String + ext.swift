@@ -1,6 +1,8 @@
 import Foundation
 
 extension String {
+    
+    //MARK: - Get time
     func getTime() -> String? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy-MM-dd HH:mm"
@@ -12,6 +14,7 @@ extension String {
         return formatter.string(from: date)
     }
     
+    //MARK: - Get date
     func getDate() -> String? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy-MM-dd HH:mm"
@@ -23,6 +26,7 @@ extension String {
         return formatter.string(from: date)
     }
     
+    //MARK: - Get date
     func getFullDate() -> String? {
         let formatter = DateFormatter()
         formatter.dateFormat = "yy-MM-dd"

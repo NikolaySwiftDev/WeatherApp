@@ -1,18 +1,20 @@
 import UIKit
 import CoreLocation
 
+//MARK: - Location Manager Delegate
 protocol LocationManagerDelegate: AnyObject {
     func didUpdateLocation()
 }
 
 class LocationManager: NSObject, CLLocationManagerDelegate {
 
+    //MARK: - Properties
     weak var delegate: LocationManagerDelegate?
-
     private var locationManager: CLLocationManager?
     var latitude: Double = 55.751244
     var longitude: Double = 37.618423
     
+    //MARK: - Init
     override init() {
         super.init()
         locationManager = CLLocationManager()
@@ -20,6 +22,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         checkLocationAuthorizationStatus()
     }
     
+    //MARK: - Check Location Authorization Status
     private func checkLocationAuthorizationStatus() {
         switch CLLocationManager.authorizationStatus() {
         case .notDetermined:
@@ -33,6 +36,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         }
     }
 
+    //MARK: - Did Update Locations
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         latitude = location.coordinate.latitude
@@ -40,6 +44,7 @@ class LocationManager: NSObject, CLLocationManagerDelegate {
         delegate?.didUpdateLocation()
     }
 
+    //MARK: - Did Change Authorization
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
         checkLocationAuthorizationStatus()
     }

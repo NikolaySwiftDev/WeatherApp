@@ -3,9 +3,11 @@ import SnapKit
 
 class HourlyForecastView: UIView {
 
+    //MARK: - Properies
     private let scrollView = UIScrollView()
     private let stackView = UIStackView()
 
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -16,6 +18,7 @@ class HourlyForecastView: UIView {
         setupView()
     }
 
+    //MARK: - Setup View
     private func setupView() {
         backgroundColor = UIColor.systemBlue
         layer.cornerRadius = 20
@@ -41,6 +44,7 @@ class HourlyForecastView: UIView {
         }
     }
 
+    //MARK: - Configure
     func configure(with data: [DailyWeatherModel.Hour]) {
         stackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 

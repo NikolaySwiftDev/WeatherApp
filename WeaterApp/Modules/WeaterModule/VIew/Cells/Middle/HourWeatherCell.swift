@@ -5,11 +5,13 @@ import SnapKit
 
 class HourlyForecastCellView: UIView {
 
+    //MARK: - Properties
     private let timeLabel = UILabel()
     private let iconView = UIImageView()
     private let temperatureLabel = UILabel()
     private let precipitationLabel = UILabel()
 
+    //MARK: - Init
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupView()
@@ -20,6 +22,7 @@ class HourlyForecastCellView: UIView {
         setupView()
     }
 
+    //MARK: - Setup View
     private func setupView() {
         backgroundColor = UIColor.white.withAlphaComponent(0.1)
         layer.cornerRadius = 12
@@ -58,6 +61,7 @@ class HourlyForecastCellView: UIView {
         }
     }
 
+    //MARK: - Configure
     func configure(model: DailyWeatherModel.Hour) {
         timeLabel.text = model.time.getTime()
         temperatureLabel.text = "\(model.temp_c)°C"

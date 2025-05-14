@@ -1,16 +1,18 @@
 import Foundation
 
-//"https://api.weatherapi.com/v1/current.json?key=fa8b3df74d4042b9aa7135114252304&q=59.9375,30.3086"
+// MARK: - Protocol
+protocol WeatherManagerProtocol: AnyObject {
+    func fetchCurrentWeather(lat: Double, lon: Double, completion: @escaping (Result<CurrentWeatherModel, Error>) -> Void)
+    func fetchDailyForecast(lat: Double, lon: Double, completion: @escaping (Result<[DailyWeatherModel], Error>) -> Void)
+    func fetchFullWeather(lat: Double, lon: Double, completion: @escaping (Result<(CurrentWeatherModel, [DailyWeatherModel]), Error>) -> Void)
+}
 
-class WeatherManager {
-    
-    static let shared = WeatherManager()
+class WeatherManager: WeatherManagerProtocol {
     
     private let apiKey = "fa8b3df74d4042b9aa7135114252304"
-//    private let apiKey = "8c84bfc0b5ec42c3ab0142721251305"
     private let session = URLSession.shared
 
-    // MARK: - 1. Только текущая погода
+    // MARK: - Fetch Current Weather
     func fetchCurrentWeather(lat: Double, lon: Double, completion: @escaping (Result<CurrentWeatherModel, Error>) -> Void) {
         let urlString = "https://api.weatherapi.com/v1/current.json?key=\(apiKey)&q=\(lat),\(lon)"
 
@@ -37,7 +39,7 @@ class WeatherManager {
         }.resume()
     }
 
-    // MARK: - 2. Только прогноз (включает и по часам, и на 7 дней)
+    // MARK: - Fetch Daily Forecast (hour, 7 days (Free api get only 3 days))
     func fetchDailyForecast(lat: Double, lon: Double, completion: @escaping (Result<[DailyWeatherModel], Error>) -> Void) {
         let urlString = "https://api.weatherapi.com/v1/forecast.json?key=\(apiKey)&q=\(lat),\(lon)&days=7"
         guard let url = URL(string: urlString) else {
@@ -63,7 +65,7 @@ class WeatherManager {
         }.resume()
     }
 
-    // MARK: - 3. Общий метод (текущая + прогноз)
+    // MARK: - Fetch Full Weather
     func fetchFullWeather(lat: Double, lon: Double, completion: @escaping (Result<(CurrentWeatherModel, [DailyWeatherModel]), Error>) -> Void) {
 
         let group = DispatchGroup()
